@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="localtrivia.css" >
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/cerulean/bootstrap.min.css"> -->
+
+</head>
+<body>
+    
+    <div class="main">
+        <div class="topnav">
+            <a class="active" href="">Start</a>
+            <a href="/login">Login</a> 
+            <a href="/register">Register</a>
+        </div>
+        <br>
+        <h1>Trivia App</h1>
+        <p>Welcome to the Trivia App <%= name %>!</p>
+        <p id="id" hidden><%= id %></p>
+        
+        <p>Please input the amount of questions you want to answer</p>
+        <input id="num" type="number"></input>
+        <br><br>
+
+        <p>Please your level of difficulty.</p>
+        <select name="difficult1" id="difficult" class="form-select" >
+            <option>Select</option>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+        </select>
+        <br><br>
+
+        <button id="find" >Start</button>
+
+        <br><br>
+
+        <div id="startBox" style="display: none;">
+            
+            <h3 id="question">Question: </h3>
+
+            <h3 id="score">Score: </h3>
+
+            <h4 id="difficulty">Difficulty: </h4>
+            
+            <button onclick="checkAnswer1()" id="answer1" >Answer 1</button>
+            <button onclick="checkAnswer2()" id="answer2" >Answer 2</button>
+            <br>
+            <button onclick="checkAnswer3()" id="answer3">Answer 3</button>
+            <button onclick="checkAnswer4()" id="answer4">Answer 4</button>
+            <br><br>
+            <button onclick="retrieve()">Next question</button>
+
+            <p id="rightwrong"></p> 
+
+            <div id="usermessage"></div>
+
+            <button onclick="restartGame()">Restart Game</button>
+        </div>
+    </div>
+    <div id="leader">
+        <h2>Your Last Five Games Played</h2>
+        <div id="leaderboardData">
+    </div>
+
+    <div id="totals">
+        <h4>All time Score</h2>
+        <div id="totalsdata">
+    </div>
+    
+    </div>
+        <script src="game.js"></script>
+</body>
+</html>

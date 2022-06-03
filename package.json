@@ -1,0 +1,19 @@
+{
+  "name": "triviaapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "alert": "^5.0.10",
+    "ejs": "^3.1.7",
+    "express": "^4.18.1",
+    "mjs": "^1.0.0",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.16"
+  }
+}
