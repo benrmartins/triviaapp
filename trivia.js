@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 path = require('path')
+const nodemailer = require('nodemailer');
 global.globalString = ""
 global.globalId = 0
 
@@ -16,6 +17,7 @@ app.use(express.json())
 
 const mysql = require('mysql')
 
+
 const db = mysql.createConnection({
     user: 'root',
     host: 'localhost',
@@ -24,21 +26,23 @@ const db = mysql.createConnection({
     database: 'TriviaApp',
 })
 
-
 app.get('/login', (req, res) => {
     res.render('login.ejs')
-    
+
 })
 
 app.post('/login', (req, res) => {
     const name = req.body.name
     const password = req.body.password
+    const email = req.body.email
 
    db.query("SELECT * FROM Login", function (err, result, fields) {
        if (err) throw err
        let bol = true
+       console.log(name, password)
+
        for(let i = 0; i < result.length; i++) {
-           if(result[i].Name == name && result[i].Password == password) {
+           if((result[i].Name == name || result[i].Email == name) && result[i].Password == password) {
                globalString = result[i].Name
                globalId = result[i].idLogin
                res.redirect('/')
@@ -61,6 +65,8 @@ app.get('/register', (req, res) => {
 app.post('/register', (req, res) => {
     let name = req.body.name
     let password = req.body.password
+    let email = req.body.email
+
 
     db.query("SELECT * FROM Login", function (err, result, fields) {
         let bool = true
@@ -73,7 +79,7 @@ app.post('/register', (req, res) => {
             }
         }
         if(bool) {
-            db.query('INSERT INTO Login (Name, Password) VALUES (?, ?)', [name, password], (err, result) => {
+            db.query('INSERT INTO Login (Name, Password, Email) VALUES (?, ?, ?)', [name, password, email], (err, result) => {
                 if(err) {
                     console.log(err)
                 }
@@ -84,6 +90,7 @@ app.post('/register', (req, res) => {
 
         }
     })
+    
     
 })
 

@@ -4,75 +4,129 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <title>Start Game</title>
     <!-- <link rel="stylesheet" href="localtrivia.css" >
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/cerulean/bootstrap.min.css"> -->
-
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 <body>
+    <nav class="navbar navbar-expand-sm shadow bg-dark navbar-dark">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="active nav-link btn text-uppercase fw-bold" href="">Start</a>
+            </li>
+            <li class="nav-item">
+                <a href="/login" class="nav-link btn text-uppercase fw-bold">Login</a> 
+            </li>
+            <li class="nav-item"></li>
+                <a href="/register" class="nav-link btn text-uppercase fw-bold">Register</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12 mx-auto">
+                
+                <div class="card border-0 shadow rounded-3 my-5">
+
+                    <div id="leader" class="card-body p-4 p-sm-5">
+                        <h1 class="text-success">Your Last Five Games Played</h1>
+                        <div id="leaderboardData"></div>
     
-    <div class="main">
-        <div class="topnav">
-            <a class="active" href="">Start</a>
-            <a href="/login">Login</a> 
-            <a href="/register">Register</a>
-        </div>
-        <br>
-        <h1>Trivia App</h1>
-        <p>Welcome to the Trivia App <%= name %>!</p>
-        <p id="id" hidden><%= id %></p>
-        
-        <p>Please input the amount of questions you want to answer</p>
-        <input id="num" type="number"></input>
-        <br><br>
+                        <div id="totals">
+                            <h2 class="text-info">All time Score</h2>
+                            <p id="sctotal"></p>
+                            <div id="totalsdata"></div>
+                        </div>
+                    </div>
 
-        <p>Please your level of difficulty.</p>
-        <select name="difficult1" id="difficult" class="form-select" >
-            <option>Select</option>
-            <option value="easy">Easy</option>
-            <option value="medium">Medium</option>
-            <option value="hard">Hard</option>
-        </select>
-        <br><br>
-
-        <button id="find" >Start</button>
-
-        <br><br>
-
-        <div id="startBox" style="display: none;">
-            
-            <h3 id="question">Question: </h3>
-
-            <h3 id="score">Score: </h3>
-
-            <h4 id="difficulty">Difficulty: </h4>
-            
-            <button onclick="checkAnswer1()" id="answer1" >Answer 1</button>
-            <button onclick="checkAnswer2()" id="answer2" >Answer 2</button>
-            <br>
-            <button onclick="checkAnswer3()" id="answer3">Answer 3</button>
-            <button onclick="checkAnswer4()" id="answer4">Answer 4</button>
-            <br><br>
-            <button onclick="retrieve()">Next question</button>
-
-            <p id="rightwrong"></p> 
-
-            <div id="usermessage"></div>
-
-            <button onclick="restartGame()">Restart Game</button>
-        </div>
-    </div>
-    <div id="leader">
-        <h2>Your Last Five Games Played</h2>
-        <div id="leaderboardData">
-    </div>
-
-    <div id="totals">
-        <h4>All time Score</h2>
-        <div id="totalsdata">
-    </div>
+                    <div class="card-body p-4 p-sm-5">
+                        <h1 class="text-primary">Trivia App</h1>
+                        <p>Welcome to the Trivia App <%= name %>!</p>
+                        <p id="gameId" hidden><%= id %></p>
+                    
+                        <p>Please input the amount of questions you want to answer</p>
+                        <div class="col-sm-12 col-md-4 col-lg-4">
+                            <input id="num" type="number" class="form-control" id="usr"></input>
+                        </div>
+                        <br><br>
     
+                        <p>Please your level of difficulty.</p>
+                        <div class="col-sm-12 col-md-4 col-lg-4">
+                            <select class="form-control" name="difficult1" id="difficult" class="form-select" >
+                                <option>Select</option>
+                                <option value="easy">Easy</option>
+                                <option value="medium">Medium</option>
+                                <option value="hard">Hard</option>
+                            </select>
+                        
+                            <br><br>
+                            <button id="find" class="btn btn-primary text-uppercase fw-bold">Start</button>
+                        </div>
+                        <br><hr>
+                    </div>
+                    <div class="card-body p-4 px-5">
+                        <div id="startBox" style="display: none;">
+                            
+                            <p id="question"><strong>Question:</strong> </p>
+    
+                            <p id="score"><strong>Score:</strong> </p>
+    
+                            <p id="difficulty"><strong>Difficulty:</strong> </p>
+
+                            <div class="row mx-auto p-sm-3">
+                                <div class="col-sm-12 col-md-3 col-lg-3">
+                                    <button onclick="checkAnswer1()" class="btn btn-outline-primary text-uppercase btn-block" id="answer1" >Answer 1</button>
+                                </div>
+                                <div class="col-sm-12 col-md-3 col-lg-3">
+                                    <button onclick="checkAnswer2()" class="btn btn-outline-primary text-uppercase btn-block" id="answer2" >Answer 2</button>
+                                </div>
+                                <div class="col-sm-12 col-md-3 col-lg-3">
+                                    <button onclick="checkAnswer3()" class="btn btn-outline-primary text-uppercase btn-block" id="answer3">Answer 3</button>
+                                </div>
+                                <div class="col-sm-12 col-md-3 col-lg-3">
+                                    <button onclick="checkAnswer4()" class="btn btn-outline-primary text-uppercase btn-block" id="answer4">Answer 4</button>
+                                </div>
+                            </div>
+                            <br><br>
+                            <button onclick="retrieve()" id="nextQuestion" class="btn btn-primary text-uppercase">Next question</button>
+    
+                            <p id="rightwrong"></p> 
+    
+                            <div class="modal" id="userMessageContainer">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                
+                                        <div class="modal-header">
+                                        <h4 class="modal-title">GAME OVER</h4>
+                                        <button type="button" onclick="restartGame()" class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+                                
+                                        <div class="modal-body">
+                                            <div id="usermessage">
+                                            </div>
+                                        </div>
+                                
+                                        <div class="modal-footer">
+                                            <button onclick="restartGame()" type="button" data-dismiss="modal" class="btn btn-danger text-uppercase">Restart Game</button>
+                                        </div>
+                                
+                                    </div>
+                                </div>
+                            </div>    
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+
+
         <script src="game.js"></script>
 </body>
 </html>

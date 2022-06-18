@@ -3,8 +3,8 @@ let score = 0;
 let totalScore = 0;
 let totalAnswered = 0;
 let rightAnswer = ""
-let id = document.getElementById("id").innerText
-id = parseInt(id, 10)
+let playerId = document.getElementById("gameId").innerText
+playerId = parseInt(playerId, 10)
 
 window.onload = async () => {
     await getScore().then(allScores => {
@@ -12,17 +12,11 @@ window.onload = async () => {
         const scoreTotal = document.getElementById("totals")
         const totalElm = document.createElement("p")
 
-        for(let i = allScores.length - 1 ; i >= allScores.length - 6; i--) {
-            if(allScores[i].login_id == id) {
-                const scoreElm = document.createElement("p")
-                const scoreData = allScores[i]
-                scoreElm.innerText = `Username: ${scoreData.Name} | Difficulty: ${scoreData.difficulty} | Score: ${scoreData.total_correct} / ${scoreData.total_correct + scoreData.total_wrong}`
-                lbDiv.appendChild(scoreElm)
-            }
-        }
+
+        console.log(allScores)
 
         for(let i = 0; i < allScores.length; i++) {
-            if(allScores[i].login_id == id) {
+            if(allScores[i].login_id === playerId) {
                 const scoreData = allScores[i]
                 totalScore += scoreData.total_correct
                 totalAnswered += scoreData.total_correct + scoreData.total_wrong
@@ -33,9 +27,17 @@ window.onload = async () => {
             totalElm.innerText = `Total Correct/Total Answered: ${totalScore} / ${totalAnswered} or ${Math.round(totalScore/totalAnswered * 100)}%`
             scoreTotal.appendChild(totalElm)
         }
-        
-        
+
+        for(let i = allScores.length - 1 ; i >= allScores.length - 6; i--) {
+            if(allScores[i].login_id === playerId) {
+                const scoreElm = document.createElement("p")
+                const scoreData = allScores[i]
+                scoreElm.innerText = `Username: ${scoreData.Name} | Difficulty: ${scoreData.difficulty} | Score: ${scoreData.total_correct} / ${scoreData.total_correct + scoreData.total_wrong}`
+                lbDiv.appendChild(scoreElm)
+            }
+        }
     })
+    console.log("hi")
 }
 
 
@@ -65,6 +67,19 @@ async function postScore(newScore) {
 }
 
 const retrieve = () => {
+    document.getElementById("answer1").classList.remove('btn-danger','btn-success');
+    document.getElementById("answer1").classList.add('btn-outline-primary');
+    
+    document.getElementById("answer2").classList.remove('btn-danger','btn-success');
+    document.getElementById("answer2").classList.add('btn-outline-primary');
+
+    document.getElementById("answer3").classList.remove('btn-danger','btn-success');
+    document.getElementById("answer3").classList.add('btn-outline-primary');
+
+    document.getElementById("answer4").classList.remove('btn-danger','btn-success');
+    document.getElementById("answer4").classList.add('btn-outline-primary');
+
+
     getData().then((value) => {
         trivia(value)
     })
@@ -75,7 +90,7 @@ document.getElementById("find").addEventListener("click", removeClass)
 const trivia = (data) => {
     console.log(data)
     const totalNum = document.getElementById("num").value
-    if (questionNumber <= totalNum) {
+    if (questionNumber <= totalNum - 1) {
         for(let i = 0; i < data.results.length; i++) {
             if(data.results[i].difficulty === document.getElementById('difficult').value) {
                 rightAnswer = data.results[i].correct_answer
@@ -84,7 +99,7 @@ const trivia = (data) => {
                 list.splice(Math.floor(Math.random() * (incorrectAnswer.length + 1)), 0, rightAnswer)
                 questions = data.results[i].question
 
-                document.getElementById("question").innerHTML = `Question: ${questions}`
+                document.getElementById("question").innerHTML = `<strong>Question:</strong> ${questions}`
 
                 let answer1 = list[0]
                 let answer2 = list[1]
@@ -96,8 +111,7 @@ const trivia = (data) => {
                 document.querySelector("#answer3").innerHTML = answer3
                 document.querySelector("#answer4").innerHTML = answer4
 
-                document.getElementById("score").innerHTML = `Score: ${score}/${questionNumber}`
-                document.getElementById("difficulty").innerHTML = "Difficulty: " + data.results[i].difficulty
+                document.getElementById("difficulty").innerHTML = "<strong>Difficulty:</strong> " + data.results[i].difficulty
 
 
                 reset()
@@ -106,14 +120,22 @@ const trivia = (data) => {
                 document.getElementById('answer2').disabled = false;
                 document.getElementById('answer3').disabled = false;
                 document.getElementById('answer4').disabled = false;
+
+                document.getElementById("score").innerHTML = `<strong>Score:</strong> ${score}/${questionNumber}`
+
                 break;
             } 
         }
         questionNumber++
     } else {
-        questionNumber = questionNumber - 1
+        document.getElementById("score").innerHTML = `<strong>Score:</strong> ${score}/${questionNumber}`
+        let myModal = new bootstrap.Modal(
+            document.getElementById("userMessageContainer"),
+            {}
+        );
+        myModal.show();
         document.getElementById('usermessage').innerHTML = `Game over. You have answered ${questionNumber} questions. You got ${Math.floor(score/(questionNumber) * 100)}% right!`
-        postScore({loginID: id, difficulty: document.getElementById('difficult').value , correctQuestions: score, incorrectQuestion: questionNumber - score})
+        postScore({loginID: playerId, difficulty: document.getElementById('difficult').value , correctQuestions: score, incorrectQuestion: questionNumber - score})
     }
 }
 
@@ -122,8 +144,14 @@ const checkAnswer1 = () => {
     if(rightAnswer === document.getElementById("answer1").textContent) {
         score++
         document.getElementById("rightwrong").innerHTML = "You selected the correct answer"
+        document.getElementById("answer1").classList.remove('btn-outline-primary')
+        document.getElementById("answer1").classList.add('btn-success');
+
     } else {
         document.getElementById("rightwrong").innerHTML = "You selected the incorrect answer. The correct answer is: " + rightAnswer
+        document.getElementById("answer1").classList.remove('btn-outline-primary')
+        document.getElementById("answer1").classList.add('btn-danger');
+
     }
 
     document.getElementById('answer1').disabled = true;
@@ -136,8 +164,15 @@ const checkAnswer2 = () => {
     if(rightAnswer === document.getElementById("answer2").textContent) {
         score++
         document.getElementById("rightwrong").innerHTML = "You selected the correct answer"
+        document.getElementById("answer2").classList.remove('btn-outline-primary')
+        document.getElementById("answer2").classList.add('btn-success');
+
     } else {
         document.getElementById("rightwrong").innerHTML = "You selected the incorrect answer. The correct answer is: " + rightAnswer
+        document.getElementById("answer2").classList.remove('btn-outline-primary')
+
+        document.getElementById("answer2").classList.add('btn-danger');
+
     }
 
     document.getElementById('answer1').disabled = true;
@@ -150,8 +185,13 @@ const checkAnswer3 = () => {
     if(rightAnswer === document.getElementById("answer3").textContent) {
         score++
         document.getElementById("rightwrong").innerHTML = "You selected the correct answer"
+        document.getElementById("answer3").classList.remove('btn-outline-primary')
+        document.getElementById("answer3").classList.add('btn-success');
+
     } else {
         document.getElementById("rightwrong").innerHTML = "You selected the incorrect answer. The correct answer is: " + rightAnswer
+        document.getElementById("answer3").classList.remove('btn-outline-primary')
+        document.getElementById("answer3").classList.add('btn-danger');
     }
 
     document.getElementById('answer1').disabled = true;
@@ -164,8 +204,15 @@ const checkAnswer4 = () => {
     if(rightAnswer === document.getElementById("answer4").textContent) {
         score++
         document.getElementById("rightwrong").innerHTML = "You selected the correct answer"
+        document.getElementById("answer4").classList.remove('btn-outline-primary')
+        document.getElementById("answer4").classList.add('btn-success');
+
+
     } else {
         document.getElementById("rightwrong").innerHTML = "You selected the incorrect answer. The correct answer is: " + rightAnswer
+        document.getElementById("answer4").classList.remove('btn-outline-primary')
+        document.getElementById("answer4").classList.add('btn-danger');
+
     }
     document.getElementById('answer1').disabled = true;
     document.getElementById('answer2').disabled = true;
@@ -179,6 +226,7 @@ const restartGame = () => {
     questionNumber = 0
     score = 0
     document.getElementById('startBox').style.display = "none"
+
     location.reload()
 
 }
