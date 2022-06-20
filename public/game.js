@@ -6,6 +6,12 @@ let rightAnswer = ""
 let playerId = document.getElementById("gameId").innerText
 playerId = parseInt(playerId, 10)
 
+if(playerId == 0) {
+    alert(location.href + "\nPlease Login");
+    location.href = "/";
+}
+
+
 window.onload = async () => {
     await getScore().then(allScores => {
         const lbDiv = document.getElementById("leaderboardData")
@@ -28,7 +34,7 @@ window.onload = async () => {
             scoreTotal.appendChild(totalElm)
         }
 
-        for(let i = allScores.length - 1 ; i >= allScores.length - 6; i--) {
+        for(let i = allScores.length - 1 ; i >= allScores.length - 5; i--) {
             if(allScores[i].login_id === playerId) {
                 const scoreElm = document.createElement("p")
                 const scoreData = allScores[i]

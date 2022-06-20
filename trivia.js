@@ -26,12 +26,12 @@ const db = mysql.createConnection({
     database: 'TriviaApp',
 })
 
-app.get('/login', (req, res) => {
+app.get('/', (req, res) => {
     res.render('login.ejs')
 
 })
 
-app.post('/login', (req, res) => {
+app.post('/', (req, res) => {
     const name = req.body.name
     const password = req.body.password
     const email = req.body.email
@@ -39,13 +39,12 @@ app.post('/login', (req, res) => {
    db.query("SELECT * FROM Login", function (err, result, fields) {
        if (err) throw err
        let bol = true
-       console.log(name, password)
 
        for(let i = 0; i < result.length; i++) {
            if((result[i].Name == name || result[i].Email == name) && result[i].Password == password) {
                globalString = result[i].Name
                globalId = result[i].idLogin
-               res.redirect('/')
+               res.redirect('/start')
                bol = false
                break
            }
@@ -83,7 +82,7 @@ app.post('/register', (req, res) => {
                 if(err) {
                     console.log(err)
                 }
-                res.redirect('/login');
+                res.redirect('/');
             })
         } else {
             res.status(401).send("Username or password is already taken")
@@ -101,7 +100,7 @@ app.post('/score', (req, res) => {
             if(err) {
                 return res.status(500).send(err.message)
             }
-            res.redirect('/');
+            res.redirect('/start');
         })
 
     } catch(err) {
@@ -120,7 +119,7 @@ app.get('/score', (req, res) => {
 })
 
 
-app.get('/', (req, res) => {
+app.get('/start', (req, res) => {
     res.render('start.ejs', { name: globalString, id: globalId })
 })
 
