@@ -1,7 +1,8 @@
 const express = require('express')
 const app = express()
-path = require('path')
-const nodemailer = require('nodemailer');
+const path = require('path')
+const bcrpyt = require("bcrypt")
+
 global.globalString = ""
 global.globalId = 0
 
@@ -26,22 +27,61 @@ const db = mysql.createConnection({
     database: 'TriviaApp',
 })
 
+app.get('/register', (req, res) => {
+    res.render('register.ejs')
+})
+
+app.post('/register', async (req, res) => {
+    let name = req.body.name
+    let email = req.body.email
+
+    const salt = await bcrpyt.genSalt()
+    const hashedPassword = await bcrpyt.hash(req.body.password, 10)
+
+
+    db.query("SELECT * FROM Login", function (err, result, fields) {
+        let bool = true
+        if (err) throw err
+        for(let i = 0; i < result.length; i++) {
+            if(result[i].Name === name) {
+                bool = false
+                break
+
+            }
+        }
+        if(bool) {
+            db.query('INSERT INTO Login (Name, Password, Email) VALUES (?, ?, ?)', [name, hashedPassword, email], (err, result) => {
+                if(err) {
+                    console.log(err)
+                }
+                res.redirect('/');
+            })
+        } else {
+            res.status(401).send("Username or password is already taken")
+
+        }
+    })
+    
+    
+})
+
+
 app.get('/', (req, res) => {
     res.render('login.ejs')
 
 })
 
-app.post('/', (req, res) => {
+app.post('/', async (req, res) => {
     const name = req.body.name
     const password = req.body.password
     const email = req.body.email
 
-   db.query("SELECT * FROM Login", function (err, result, fields) {
+   db.query("SELECT * FROM Login", async function (err, result, fields) {
        if (err) throw err
        let bol = true
 
        for(let i = 0; i < result.length; i++) {
-           if((result[i].Name == name || result[i].Email == name) && result[i].Password == password) {
+           if((result[i].Name == name || result[i].Email == name) && await bcrpyt.compare(password, result[i].Password)) {
                globalString = result[i].Name
                globalId = result[i].idLogin
                res.redirect('/start')
@@ -57,40 +97,15 @@ app.post('/', (req, res) => {
 
 })
 
-app.get('/register', (req, res) => {
-    res.render('register.ejs')
-})
-
-app.post('/register', (req, res) => {
-    let name = req.body.name
-    let password = req.body.password
-    let email = req.body.email
 
 
-    db.query("SELECT * FROM Login", function (err, result, fields) {
-        let bool = true
-        if (err) throw err
-        for(let i = 0; i < result.length; i++) {
-            if(result[i].Name === name || result[i].Password === password) {
-                bool = false
-                break
-
-            }
-        }
-        if(bool) {
-            db.query('INSERT INTO Login (Name, Password, Email) VALUES (?, ?, ?)', [name, password, email], (err, result) => {
-                if(err) {
-                    console.log(err)
-                }
-                res.redirect('/');
-            })
-        } else {
-            res.status(401).send("Username or password is already taken")
-
-        }
+app.get('/score', (req, res) => {
+    db.query("SELECT * FROM Score JOIN Login ON Score.login_id=Login.idlogin", function (err, result, fields) {
+        if(err) return res.status(500).send(err.message)
+        res.json(result)
+        
     })
-    
-    
+
 })
 
 app.post('/score', (req, res) => {
@@ -107,15 +122,6 @@ app.post('/score', (req, res) => {
         res.status(500).send(err.message)
     }
    
-})
-
-app.get('/score', (req, res) => {
-    db.query("SELECT * FROM Score JOIN Login ON Score.login_id=Login.idlogin", function (err, result, fields) {
-        if(err) return res.status(500).send(err.message)
-        res.json(result)
-        
-    })
-
 })
 
 
