@@ -109,9 +109,9 @@ app.get('/score', (req, res) => {
 })
 
 app.post('/score', (req, res) => {
-    const {loginID, difficulty, correctQuestions, incorrectQuestion} = req.body
+    const {loginID, difficulty, correctQuestions, incorrectQuestion, trivia_category} = req.body
     try {
-        db.query('INSERT INTO Score (login_id, difficulty, total_correct, total_wrong) VALUES (?, ?, ?, ?)', [loginID, difficulty, correctQuestions, incorrectQuestion], (err, result) => {
+        db.query('INSERT INTO Score (login_id, difficulty, total_correct, total_wrong, category) VALUES (?, ?, ?, ?, ?)', [loginID, difficulty, correctQuestions, incorrectQuestion, trivia_category], (err, result) => {
             if(err) {
                 return res.status(500).send(err.message)
             }

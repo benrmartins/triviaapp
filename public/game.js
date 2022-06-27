@@ -38,7 +38,7 @@ window.onload = async () => {
             if(allScores[i].login_id === playerId) {
                 const scoreElm = document.createElement("p")
                 const scoreData = allScores[i]
-                scoreElm.innerText = `Username: ${scoreData.Name} | Difficulty: ${scoreData.difficulty} | Score: ${scoreData.total_correct} / ${scoreData.total_correct + scoreData.total_wrong}`
+                scoreElm.innerText = `Username: ${scoreData.Name} | Difficulty: ${scoreData.difficulty} | Category: ${scoreData.category} | Score: ${scoreData.total_correct} / ${scoreData.total_correct + scoreData.total_wrong}`
                 lbDiv.appendChild(scoreElm)
             }
         }
@@ -96,9 +96,11 @@ document.getElementById("find").addEventListener("click", removeClass)
 const trivia = (data) => {
     console.log(data)
     const totalNum = document.getElementById("num").value
+    let diff = document.getElementById('difficult').value
+    let cat = document.getElementById('trivia_category').value
     if (questionNumber <= totalNum - 1) {
         for(let i = 0; i < data.results.length; i++) {
-            if(data.results[i].difficulty === document.getElementById('difficult').value) {
+            if((data.results[i].difficulty == diff) && (data.results[i].category == cat)) {
                 rightAnswer = data.results[i].correct_answer
                 let incorrectAnswer = data.results[i].incorrect_answers
                 let list = incorrectAnswer
@@ -141,7 +143,7 @@ const trivia = (data) => {
         );
         myModal.show();
         document.getElementById('usermessage').innerHTML = `Game over. You have answered ${questionNumber} questions. You got ${Math.floor(score/(questionNumber) * 100)}% right!`
-        postScore({loginID: playerId, difficulty: document.getElementById('difficult').value , correctQuestions: score, incorrectQuestion: questionNumber - score})
+        postScore({loginID: playerId, difficulty: document.getElementById('difficult').value , correctQuestions: score, incorrectQuestion: questionNumber - score, trivia_category: cat})
     }
 }
 

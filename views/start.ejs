@@ -47,19 +47,49 @@
                         <p>Welcome to the Trivia App <%= name %>!</p>
                         <p id="gameId" hidden><%= id %></p>
                     
-                        <p>Please input the amount of questions you want to answer</p>
+                       
                         <div class="col-sm-12 col-md-4 col-lg-4">
+                            <p>Please input the amount of questions</p>
                             <input id="num" type="number" class="form-control" id="usr"></input>
                         </div>
                         <br><br>
-    
-                        <p>Please your level of difficulty.</p>
-                        <div class="col-sm-12 col-md-4 col-lg-4">
+
+                                             
+                         <div class="col-sm-12 col-md-4 col-lg-4">
+                            <p>Please your level of difficulty.</p>  
                             <select class="form-control" name="difficult1" id="difficult" class="form-select" >
                                 <option>Select</option>
                                 <option value="easy">Easy</option>
                                 <option value="medium">Medium</option>
                                 <option value="hard">Hard</option>
+                            </select>
+    
+                            <br><br>
+
+                        <p>Please the category you want.</p>
+                            <select class="form-control" name="trivia_category" id="trivia_category" class="form-select" >
+                                <option>Select</option>
+                                <option value="General Knowledge">General Knowledge</option>
+                                <option value="Entertainment: Books">Entertainment: Books</option>
+                                <option value="Entertainment: Film">Entertainment: Film</option>
+                                <option value="Entertainment: Music">Entertainment: Music</option>
+                                <option value="Entertainment: Television">Entertainment: Television</option>
+                                <option value="Entertainment: Video Games">Entertainment: Video Games</option>
+                                <option value="Entertainment: Board Games">Entertainment: Board Games</option>
+                                <option value="Science: Computers">Science: Computers</option>
+                                <option value="Science: Mathematics">Science: Mathematics</option>
+                                <option value="Mythology">Mythology</option>
+                                <option value="Sports">Sports</option>
+                                <option value="Geography">Geography</option>
+                                <option value="History">History</option>
+                                <option value="Politics">Politics</option>
+                                <option value="Art">Art</option>
+                                <option value="Celebrities">Celebrities</option>
+                                <option value="Animals">Animals</option>
+                                <option value="Vehicles">Vehicles</option>
+                                <option value="Entertainment: Comics">Entertainment: Comics</option>
+                                <option value="Science: Gadgets">Science: Gadgets</option>
+
                             </select>
                         
                             <br><br>
