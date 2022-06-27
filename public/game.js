@@ -98,6 +98,10 @@ const trivia = (data) => {
     const totalNum = document.getElementById("num").value
     let diff = document.getElementById('difficult').value
     let cat = document.getElementById('trivia_category').value
+    if(totalNum == 0 || cat == "Select" || diff == "Select") {
+        alert("Please enter your question data")
+        return ""
+    }
     if (questionNumber <= totalNum - 1) {
         for(let i = 0; i < data.results.length; i++) {
             if((data.results[i].difficulty == diff) && (data.results[i].category == cat)) {
@@ -143,7 +147,9 @@ const trivia = (data) => {
         );
         myModal.show();
         document.getElementById('usermessage').innerHTML = `Game over. You have answered ${questionNumber} questions. You got ${Math.floor(score/(questionNumber) * 100)}% right!`
-        postScore({loginID: playerId, difficulty: document.getElementById('difficult').value , correctQuestions: score, incorrectQuestion: questionNumber - score, trivia_category: cat})
+        if(cat != "Select" && diff != "Select") {
+            postScore({loginID: playerId, difficulty: document.getElementById('difficult').value , correctQuestions: score, incorrectQuestion: questionNumber - score, trivia_category: cat})
+        }
     }
 }
 
