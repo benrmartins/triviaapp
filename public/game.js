@@ -100,6 +100,7 @@ const trivia = (data) => {
     let cat = document.getElementById('trivia_category').value
     if(totalNum == 0 || cat == "Select" || diff == "Select") {
         alert("Please enter your question data")
+        location.reload()
         return ""
     }
     if (questionNumber <= totalNum - 1) {
